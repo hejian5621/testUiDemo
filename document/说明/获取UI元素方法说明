@@ -1,0 +1,152 @@
+一、获取元素的8中方法
+1、ID定位
+#在输入框中输入“小D课堂”
+driver.find_element_by_id("kw").send_keys("小D课堂")
+#选中按钮，触发点击事件
+driver.find_element_by_id("su").click()
+2、class定位
+#在输入框中输入“小D课堂”
+driver.find_element_by_class_name("s_ipt").send_keys("jmeter 小D课堂")
+#选中按钮，触发点击事件
+driver.find_element_by_id("su").click()
+3、name定位
+#在输入框中输入“小D课堂”
+driver.find_element_by_name("wd").send_keys("springboot 小D课堂")
+#选中按钮，触发点击事件
+driver.find_element_by_id("su").click()
+4、标签定位
+#在输入框中输入“小D课堂”；通过标签听我元素，因为标签通常不是唯一，说以该方法用的很少
+driver.find_element_by_tag_name("div").send_keys("springboot 小D课堂")
+#选中按钮，触发点击事件
+ddriver.find_element_by_tag_name("div").click()
+5、超链接定位
+driver.find_element_by_link_text("视频学习").click()
+6、模糊查询定位
+driver.find_element_by_partial_link_text("工具").click()
+7、css定位
+# 获取css方法：F12进入HTML源代码页面--选择需要获取css位置的标签--点击鼠标右键--选择复制--CSS选择器（copy selector）
+driver.find_element_by_css_selector(".type_content > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1) > div:nth-child(1) > img:nth-child(1)").click()
+8、xpath定位
+# 获取css方法：F12进入HTML源代码页面--选择需要获取css位置的标签--点击鼠标右键--选择复制--CPath选择器（copy CPath）
+driver.find_element_by_xpath("/html/body/div/div/div[2]/div[2]/div/ul/li[4]/a/div/img").click()
+
+
+三、模拟用户操作，例如双击、单击、点击鼠标右键、拖拽等
+1、导入包
+from selenium.webdriver.common.action_chains import ActionChains
+2、写法，对定位到的元素执行鼠标移动到上面的操作
+ActionChains(driver).move_to_element(menu_ele).perform()
+3、说明：
+执行原理：用ActionChains的方法不会立即执行，会将所有的操作按顺序放在一个队列里，当调用perform（）方法的时候，队列中的事件会依次执行
+写法说明：分为链式写法和分布式写法（链式更简洁）
+4、鼠标和键盘的操作方法。
+perform（）  执行链中的所有动作
+click（on_element=None） 单击鼠标左键
+context_click（on_element=None）双击鼠标左键
+move_to_element(to_element)鼠标移动到摸个元素
+ele.send_keys(keys_to_senf)发送摸个词到当前焦点的元素
+
+
+二、等待
+1、强制等待
+# 导入包
+from time import sleep
+#等待3秒
+sleep(3)
+2、隐性等待
+driver.implicitly_wait(10)
+3、显性等待
+from selenium.webdriver.support import expected_conditions as EC
+# timeout:最长等待时间；poll_frequency：多长时间检查一次；ignored_exceptions：异常说明
+ele = WebDriverWait(driver,timeout, poll_frequency=0.5,ignored_exceptions=None).until(EC.presence_of_element_located((By.ID,"kw")))
+
+三、弹窗处理
+1、切换弹窗
+win = driver.switch_to_alert()
+2、在弹窗内取消和确认
+win.accept()  #取消
+win.dismiss() #确认
+
+四、cookie操作
+1、对象获取cookie
+driver.add_cookie({"name":"name","value":"jack"})  # name：cookie的名称；value：cookie的值
+
+五、截图处理
+driver.get_screenshot_as_file("./error_png.png")
+
+六、异常处理
+try:
+	driver.find_element_by_id("xdclass").click()
+except:
+	driver.get_screenshot_as_file("./error_png.png")
+
+
+七、测试套件TestSuite
+if __name__ == '__main__':
+    suite = unittest.TestSuite()
+    suite.addTest(XdclassTestCase("test_two"))
+    suite.addTest(XdclassTestCase("test_one"))
+
+    suite.addTest(XdclassTestCase("test_three"))
+    suite.addTest(XdclassTestCase("test_four"))
+
+    #verbosity参数可以控制执行结果的输出，0 是简单报告、1 是一般报告（默认）、2 是详细报告
+    runner = unittest.TextTestRunner(verbosity=2)
+    runner.run(suite)
+
+
+八、获取当前时间
+file_prefix = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())
+
+
+九、测试报告HTMLTestRunner
+1、导入测试报告包
+import HTMLTestRunner
+2、写法
+suite = unittest.TestSuite()
+    suite.addTest(XdclassTestCase("test_two"))
+    suite.addTest(XdclassTestCase("test_one"))
+
+    suite.addTest(XdclassTestCase("test_three"))
+    suite.addTest(XdclassTestCase("test_four"))
+
+    #verbosity参数可以控制执行结果的输出，0 是简单报告、1 是一般报告（默认）、2 是详细报告
+    #runner = unittest.TextTestRunner(verbosity=2)
+    #runner.run(suite)
+
+    #文件名中加了当前时间,每次生成不同的测试报告
+    file_prefix = time.strftime("%Y-%m-%d %H_%M_%S",time.localtime())
+
+    #创测试报告的result.html文件，此时还是个空文件
+    #wb 以二进制格式打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件
+    fp = open('./'+file_prefix+'_result.html', 'wb')
+    #stream 定义报告所写入的文件；title 为报告的标题；description 为报告的说明与描述
+    runner =HTMLTestRunner.HTMLTestRunner(stream=fp, title=u'<小D课堂>test report', description=u'用例执行情况:')
+
+    #运行测试容器中的用例，并将结果写入的报告中
+    runner.run(suite)
+
+    #关闭文件流，将HTML内容写进测试报告文件
+    fp.close()
+
+3、测试报告详情说明
+A、字段说明：
+Start Time :测试用例开始时间
+Duration: 测试用例结束时间
+Status：测试报告概要，Pass（测试用例通过数）、Failyre（测试用例失败数）
+Summary：概述
+Count：用例总数
+Pass：通过数
+
+
+
+4、测试报告优化
+1、说明格式
+u"这是首页登录测试用例"
+
+2、代码
+def test_three(self):
+    u"这是首页登录测试用例"
+    print(" test_three 后端 来了")
+    self.assertEqual(self.age,32)
+

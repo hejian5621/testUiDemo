@@ -1,0 +1,12 @@
+静态方法申明
+@staticmethod
+
+
+# -*- coding: utf-8 -*-
+
+
+列表转化成字符串
+[str(i) for i in list1]
+
+字典账号成字符串
+str(dictionaries)

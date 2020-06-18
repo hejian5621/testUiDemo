@@ -1,0 +1,28 @@
+安装
+pip install requests
+
+
+pip install python-dateutil
+pip install operator
+
+pip install redis
+
+pip install paramiko
+
+
+try:
+    n !=1
+except:
+   pass
+
+
+
+# text = ""
+# for char in tqdm(ProcessingDataList):
+#     text = text + char
+#     time.sleep(0.3)
+#     for char1 in tqdm(ProcessingDataList):
+#         text = text + char1
+#
+
+
