@@ -1,7 +1,6 @@
 一、获取元素的8中方法
 1、ID定位
-#在输入框中输入“小D课堂”
-driver.find_element_by_id("kw").send_keys("小D课堂")
+#在输入框中输入“小D课堂”driver.find_element_by_id("kw").send_keys("小D课堂")
 #选中按钮，触发点击事件
 driver.find_element_by_id("su").click()
 2、class定位
