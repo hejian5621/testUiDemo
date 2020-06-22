@@ -137,3 +137,8 @@ path:cookie作用的路径
 cookie管理Session信息
 
 
+pip3 install application
+pip3 install pywinauto
+from pywinauto.application import Application
+
+
